@@ -7,6 +7,7 @@ import com.example.demo.entity.Role;
 import com.example.demo.exception.TodoAPIException;
 import com.example.demo.repository.AgentRepository;
 import com.example.demo.repository.RoleRepository;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class AuthServiceImpl implements AuthService {
     private RoleRepository roleRepository;
    private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+
+    private JwtTokenProvider jwtTokenProvider;
 
 
     @Override
@@ -70,7 +73,10 @@ public class AuthServiceImpl implements AuthService {
         ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(authentication);
 
-        return "Agent logged-in successfully!.";
+
+       // return "Agent logged-in successfully!.";
+        return  token;
     }
 }
