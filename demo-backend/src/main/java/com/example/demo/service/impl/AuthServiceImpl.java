@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.JwtAuthResponse;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.Agent;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -65,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginDto loginDto) {
+    public JwtAuthResponse login(LoginDto loginDto) {
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(),
@@ -77,6 +79,24 @@ public class AuthServiceImpl implements AuthService {
 
 
        // return "Agent logged-in successfully!.";
-        return  token;
+       // return  token;
+        Optional<Agent> agentOptional = agentRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(),
+                loginDto.getUsernameOrEmail());
+
+        String role = null;
+        if(agentOptional.isPresent()){
+            Agent loggedInAgent = agentOptional.get();
+            Optional<Role> optionalRole = loggedInAgent.getRoles().stream().findFirst();
+
+            if(optionalRole.isPresent()){
+                Role userRole = optionalRole.get();
+                role = userRole.getName();
+            }
+        }
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setRole(role);
+        jwtAuthResponse.setAccessToken(token);
+        return jwtAuthResponse;
     }
 }
