@@ -21,5 +21,6 @@ public class UserDto {
     private String userPhone;
     private String userAddress;
     private String userDesignation;
+    private String isDeleted;
 
 }

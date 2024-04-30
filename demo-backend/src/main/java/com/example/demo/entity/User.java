@@ -30,4 +30,6 @@ public class User {
     private String userAddress;
     @Column
     private String userDesignation;
+    @Column
+    private String isDeleted;
 }
