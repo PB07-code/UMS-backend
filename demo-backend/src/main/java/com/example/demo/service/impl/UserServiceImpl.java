@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = UserMapper.mapToUser(userDto);
+        user.setIsDeleted("N");
         User savedUser = userRepository.save(user);
         return UserMapper.mapToUserDto(savedUser);
 
@@ -37,12 +38,23 @@ public class UserServiceImpl implements UserService {
       return UserMapper.mapToUserDto(user);
     }
 
-    @Override
-    public List<UserDto> getAllUsers() {
+
+  /*  public List<UserDto> getAllUsers() {
       List<User> usersList =  userRepository.findAll();
         return usersList.stream()
                 .map((user) -> UserMapper.mapToUserDto(user)).collect(Collectors.toList());
-    }
+
+    }*/
+  @Override
+        public List<UserDto> getAllUsers() {
+            List<User> usersList = userRepository.findAll();
+            return usersList.stream()
+                    .filter(user -> "N".equals(user.getIsDeleted())) // Filter out users where isDeleted is "N"
+                    .map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+                    .collect(Collectors.toList());
+        }
+
+
 
     @Override
     public UserDto updateUser(Long userId, UserDto updatedUser) {
@@ -59,10 +71,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public UserDto deleteUser(Long userId) {
         User user =  userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User does not exist with this id" + userId));
 
-        userRepository.deleteById(userId);
+       // userRepository.deleteById(userId);
+        user.setIsDeleted("Y");
+        return UserMapper.mapToUserDto(userRepository.save(user));
+
+
     }
 }
