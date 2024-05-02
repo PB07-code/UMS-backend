@@ -1,13 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.JwtAuthResponse;
-import com.example.demo.dto.LoginDto;
-import com.example.demo.dto.RegisterDto;
+import com.example.demo.dto.*;
 import com.example.demo.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -37,6 +37,13 @@ public class AuthController {
        // jwtAuthResponse.setAccessToken(token);
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+    }
+
+    //Build Get All Agents Rest API
+    @GetMapping("/agents")
+    public ResponseEntity<List<AgentDto>> getAllAgents(){
+        List<AgentDto> agentsList = authService.getAllAgents();
+        return ResponseEntity.ok(agentsList);
     }
 
 }
