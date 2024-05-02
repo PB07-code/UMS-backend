@@ -47,11 +47,14 @@ public class UserServiceImpl implements UserService {
     }*/
   @Override
         public List<UserDto> getAllUsers() {
-            List<User> usersList = userRepository.findAll();
+           /* List<User> usersList = userRepository.findAll();
             return usersList.stream()
                     .filter(user -> "N".equals(user.getIsDeleted())) // Filter out users where isDeleted is "N"
                     .map(UserMapper::mapToUserDto) // Using method reference instead of lambda
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()); */
+      List<User> usersList = userRepository.findByIsDeleted("N");
+      return usersList.stream().map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+              .collect(Collectors.toList());
         }
 
 
@@ -81,4 +84,12 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
+    @Override
+    public int getTotalUserCount() {
+        List<User> usersList = userRepository.findAll();
+        return usersList.size(); // Total number of users
+    }
+
+
 }

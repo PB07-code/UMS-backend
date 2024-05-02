@@ -15,4 +15,6 @@ public interface UserService {
 
     UserDto deleteUser(Long userId);
 
+     int getTotalUserCount();
+
 }

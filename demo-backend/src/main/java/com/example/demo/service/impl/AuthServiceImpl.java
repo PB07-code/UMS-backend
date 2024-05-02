@@ -1,11 +1,13 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AgentDto;
 import com.example.demo.dto.JwtAuthResponse;
 import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.Agent;
 import com.example.demo.entity.Role;
 import com.example.demo.exception.TodoAPIException;
+import com.example.demo.mapper.AgentMapper;
 import com.example.demo.repository.AgentRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.security.JwtTokenProvider;
@@ -21,8 +23,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -98,5 +102,15 @@ public class AuthServiceImpl implements AuthService {
         jwtAuthResponse.setRole(role);
         jwtAuthResponse.setAccessToken(token);
         return jwtAuthResponse;
+    }
+
+    @Override
+    public List<AgentDto> getAllAgents() {
+
+            List<Agent> agentsList =  agentRepository.findAll();
+            return agentsList.stream()
+                    .map((agent) -> AgentMapper.toDto(agent)).collect(Collectors.toList());
+
+
     }
 }
