@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.NotificationDto;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
@@ -21,9 +22,12 @@ public class UserController {
     // Build Add User REST API
  //   @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<NotificationDto> createUser(@RequestBody UserDto userDto){
         UserDto savedEmployee = userService.createUser(userDto);
-        return new ResponseEntity(savedEmployee, HttpStatus.CREATED);
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setMessage("User Added");
+        notificationDto.setUserDto(savedEmployee);
+        return new ResponseEntity(notificationDto, HttpStatus.CREATED);
     }
 
     //Build GetUserById RestAPI
