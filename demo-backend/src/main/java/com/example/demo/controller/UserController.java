@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<NotificationDto> createUser(@RequestBody UserDto userDto){
         UserDto savedEmployee = userService.createUser(userDto);
         NotificationDto notificationDto = new NotificationDto();
-        notificationDto.setMessage("User Added");
+        notificationDto.setMessage("Added");
         notificationDto.setUserDto(savedEmployee);
         return new ResponseEntity(notificationDto, HttpStatus.CREATED);
     }
