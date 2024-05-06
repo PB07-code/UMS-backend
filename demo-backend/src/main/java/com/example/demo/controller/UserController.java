@@ -47,19 +47,37 @@ public class UserController {
 
     //Build Update User By Id RestAPI
  //   @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("{id}")
+  /*  @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUserById(@PathVariable("id") Long userId,@RequestBody UserDto userDto){
         UserDto updateduserDto=  userService.updateUser(userId,userDto);
         return ResponseEntity.ok(updateduserDto);
-    }
+    }*/
 
+    @PutMapping("{id}")
+    public ResponseEntity<NotificationDto> updateUserById(@PathVariable("id") Long userId,@RequestBody UserDto userDto) {
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setMessage("Updated");
+        UserDto updateduserDto = userService.updateUser(userId, userDto);
+        notificationDto.setUserDto(updateduserDto);
+        return ResponseEntity.ok(notificationDto);
+    }
     //Build Delete User By Id RestAPI
 
   //  @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("{id}")
+  /*  @DeleteMapping("{id}")
     public ResponseEntity<String> deleteUserById(@PathVariable("id") Long userId){
         userService.deleteUser(userId);
         return ResponseEntity.ok("User Deleted Successfully");
+    }*/
+
+     @DeleteMapping("{id}")
+    public ResponseEntity<NotificationDto> deleteUserById(@PathVariable("id") Long userId){
+         NotificationDto notificationDto = new NotificationDto();
+         notificationDto.setMessage("Deleted");
+         UserDto userDto=  userService.getUserById(userId);
+         notificationDto.setUserDto(userDto);
+        userService.deleteUser(userId);
+        return ResponseEntity.ok(notificationDto);
     }
 
 }
