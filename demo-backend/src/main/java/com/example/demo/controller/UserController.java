@@ -80,4 +80,20 @@ public class UserController {
         return ResponseEntity.ok(notificationDto);
     }
 
+//GetTotalUsers
+    @GetMapping("/getTotalUsers")
+    public ResponseEntity<List<UserDto>> getTotalUsers(){
+        List<UserDto> usersList = userService.getTotalUsers();
+        return ResponseEntity.ok(usersList);
+    }
+
+
+    //GetRemovedUsers
+    @GetMapping("/getRemovedUsers")
+    public ResponseEntity<List<UserDto>> getRemovedUsers(){
+        List<UserDto> usersList = userService.getRemovedUsers();
+        return ResponseEntity.ok(usersList);
+    }
+
+
 }

@@ -17,4 +17,8 @@ public interface UserService {
 
      int getTotalUserCount();
 
+    public List<UserDto> getTotalUsers();
+
+    public List<UserDto> getRemovedUsers();
+
 }

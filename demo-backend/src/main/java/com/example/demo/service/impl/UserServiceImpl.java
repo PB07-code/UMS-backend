@@ -45,6 +45,8 @@ public class UserServiceImpl implements UserService {
                 .map((user) -> UserMapper.mapToUserDto(user)).collect(Collectors.toList());
 
     }*/
+
+    //Get Active Users
   @Override
         public List<UserDto> getAllUsers() {
            /* List<User> usersList = userRepository.findAll();
@@ -90,6 +92,34 @@ public class UserServiceImpl implements UserService {
         List<User> usersList = userRepository.findAll();
         return usersList.size(); // Total number of users
     }
+
+//Total Users
+    @Override
+    public List<UserDto> getTotalUsers() {
+           /* List<User> usersList = userRepository.findAll();
+            return usersList.stream()
+                    .filter(user -> "N".equals(user.getIsDeleted())) // Filter out users where isDeleted is "N"
+                    .map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+                    .collect(Collectors.toList()); */
+        List<User> usersList = userRepository.findAll();
+        return usersList.stream().map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+                .collect(Collectors.toList());
+    }
+
+
+    //Get Removed Users
+    @Override
+    public List<UserDto> getRemovedUsers() {
+           /* List<User> usersList = userRepository.findAll();
+            return usersList.stream()
+                    .filter(user -> "N".equals(user.getIsDeleted())) // Filter out users where isDeleted is "N"
+                    .map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+                    .collect(Collectors.toList()); */
+        List<User> usersList = userRepository.findByIsDeleted("Y");
+        return usersList.stream().map(UserMapper::mapToUserDto) // Using method reference instead of lambda
+                .collect(Collectors.toList());
+    }
+
 
 
 }
