@@ -1,11 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.AgentDto;
-import com.example.demo.dto.JwtAuthResponse;
-import com.example.demo.dto.LoginDto;
-import com.example.demo.dto.RegisterDto;
+import com.example.demo.dto.*;
 import com.example.demo.entity.Agent;
 import com.example.demo.entity.Role;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.TodoAPIException;
 import com.example.demo.mapper.AgentMapper;
 import com.example.demo.repository.AgentRepository;
@@ -18,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -113,4 +110,21 @@ public class AuthServiceImpl implements AuthService {
 
 
     }
+
+
+   //Change Role from UI
+    @Override
+    public AgentDto updateAgentRole(Long agentId, String role) {
+        Agent agent =  agentRepository.findById(agentId)
+                .orElseThrow(()->new ResourceNotFoundException("Agent does not exist with this id" + agentId));
+
+        Set<Role> roles = new HashSet<>();
+        Role agentRole = roleRepository.findByName(role);
+        roles.add(agentRole);
+
+        agent.setRoles(roles);
+
+        return AgentMapper.toDto(agentRepository.save(agent));
+    }
+
 }

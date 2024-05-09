@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin("*")
 @AllArgsConstructor
@@ -45,5 +46,15 @@ public class AuthController {
         List<AgentDto> agentsList = authService.getAllAgents();
         return ResponseEntity.ok(agentsList);
     }
+
+
+   //Update Agent Role
+    @PutMapping("{id}")
+    public ResponseEntity<String> updateAgentRole(@PathVariable("id") Long agentId,@RequestParam String role) {
+
+       AgentDto updatedagentDto = authService.updateAgentRole(agentId,role);
+       return ResponseEntity.ok("Role Updated");
+    }
+
 
 }
