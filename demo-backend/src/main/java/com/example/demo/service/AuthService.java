@@ -11,4 +11,7 @@ public interface AuthService {
     JwtAuthResponse login(LoginDto loginDto);
 
     List<AgentDto> getAllAgents();
+
+    //Change Role
+    public AgentDto updateAgentRole(Long agentId, String role);
 }
